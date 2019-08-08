@@ -12,3 +12,5 @@ router.post('/', (req, res, next) => {
         message: "Yes you have handled a post request"
     })
 });
+
+module.exports = router;
