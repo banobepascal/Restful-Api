@@ -1,21 +1,30 @@
 const express = require('express');
 const router = express.Router();
 
+router.use(express.json());
+
 const courses = [
     {id: 1, name: 'course1'},
     {id: 2, name: 'course2'},
     {id: 3, name: 'course3'}
 ];
 
-router.get('/', (req, res, next) => {
-    res.status(200).json({
-        message: "Yes you have handled a get request"
-    });
+router.get('/courses', (req, res, next) => {
+    res.send(courses);
 });
 
 router.get('/courses/:id', (req, res, next) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
     if (!course) res.status(404).send('The course with the given id not found');
+    res.send(course);
+});
+
+router.post('/courses', (req, res, next) => {
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name
+    };
+    courses.push(course);
     res.send(course);
 });
 
