@@ -14,7 +14,9 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/courses/:id', (req, res, next) => {
-    const courese = courses.find(c => c.id === parseInt(req.params.id));
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) res.status(404).send('The course with the given id not found');
+    res.send(course);
 });
 
 router.post('/', (req, res, next) => {
