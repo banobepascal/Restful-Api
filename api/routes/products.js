@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const express = require('express');
 const router = express.Router();
 
@@ -20,6 +21,13 @@ router.get('/courses/:id', (req, res, next) => {
 });
 
 router.post('/courses', (req, res, next) => {
+    const schema = {
+        name: Joi.string().min(3).required()
+    };
+
+    const result = Joi.validate(req.body, schema);
+    console.log(result);
+
     if (!req.body.name || req.body.name.length < 3){
         res.status(404).send("Invalid input please");
         return;
