@@ -24,12 +24,10 @@ router.post('/courses', (req, res, next) => {
     const schema = {
         name: Joi.string().min(3).required()
     };
-
     const result = Joi.validate(req.body, schema);
-    console.log(result);
 
-    if (!req.body.name || req.body.name.length < 3){
-        res.status(404).send("Invalid input please");
+    if (result.error){
+        res.status(404).send(result.error.details[0].message);
         return;
     }
     const course = {
@@ -37,6 +35,24 @@ router.post('/courses', (req, res, next) => {
         name: req.body.name
     };
     courses.push(course);
+    res.send(course);
+});
+
+router.put('/courses/:id', (req, res, next) => {
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) res.status(404).send("Course not availabe");
+    
+    // validate
+    const schema = {
+        name: Joi.string().min(3).required()
+    };
+    const result = Joi.validate(req.body, schema);
+    if(result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    course.name = req.body.name;
     res.send(course);
 });
 
