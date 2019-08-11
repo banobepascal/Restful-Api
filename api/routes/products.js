@@ -20,6 +20,10 @@ router.get('/courses/:id', (req, res, next) => {
 });
 
 router.post('/courses', (req, res, next) => {
+    if (!req.body.name || req.body.name.length < 3){
+        res.status(404).send("Invalid input please");
+        return;
+    }
     const course = {
         id: courses.length + 1,
         name: req.body.name
